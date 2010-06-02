@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
+		 creationComplete="group1_creationCompleteHandler(event)">
+
+
+	<fx:Declarations>
+		<s:State name="healer" />
+		<s:State name="Rogue" />
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.controls.List;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			
+			import com.wowzolo.valueObjects.Gem;
+			
+			[Bindable]
+			public var klass:String;
+			
+			[Bindable]
+			private var orientType:ArrayCollection = new ArrayCollection(["pvp", "pve"]);
+			
+			[Bindable]
+			private var role:ArrayCollection  = new ArrayCollection(["DPS", "Healer", "Tank"]);
+			
+			[Bindable]
+			private var gemColor:ArrayCollection = new ArrayCollection(["All", "Red", "Yellow", "Blue", "Orange", "Green", "Purple"]);
+			
+			private var gemList:Gem = new Gem();
+			
+			[Bindable]
+			private var preferGemList:ArrayCollection = gemList.gemPreferList;
+			
+			[Bindable]
+			private var otherGemList:ArrayCollection = gemList.gemOtherList;
+
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				this.currentState = klass;
+			}
+			
+			private function unlikeLabelFunction(item:Object, column:DataGridColumn):String{
+				return "-";
+			}
+			
+			private function addLikeLabel(item:Object, column:DataGridColumn):String{
+				return "+";
+			}
+			
+			protected function prefer_itemClickHandler(event:ListEvent):void
+			{
+				// click the "-" favourite icon
+				if (event.columnIndex == 0) {
+					otherGemList.addItem(preferGemList.getItemAt(event.rowIndex));
+					preferGemList.removeItemAt(event.rowIndex);
+				}
+			}
+
+
+			protected function other_itemClickHandler(event:ListEvent):void
+			{
+				// click the "-" favourite icon
+				if (event.columnIndex == 0) {
+					
+				}
+					preferGemList.addItem(otherGemList.getItemAt(event.rowIndex));
+					otherGemList.removeItemAt(event.rowIndex);
+			}
+			
+			protected function resetFilter_clickHandler(event:MouseEvent):void
+			{
+				filterAgi.selected = false;
+				filterAp.selected = false;
+				filterArp.selected = false;
+				filterCri.selected = false;
+				filterDefence.selected = false;
+				filterExp.selected = false;
+				filterHaste.selected = false;
+				filterHit.selected = false;
+				filterInt.selected = false;
+				filterSpr.selected = false;
+				filterSta.selected = false;
+				filterStr.selected = false;
+			}
+
+
+			protected function filterGroup_clickHandler(event:MouseEvent):void
+			{
+				var checkboxId:String = event.target.id;
+				switch (checkboxId) {
+					case "filterAgi" :
+						if (filterAgi.selected){
+							preferGemList.filterFunction = filterFunctionAgi;
+							preferGemList.refresh();
+						} else {
+							preferGemList.filterFunction = null;
+							preferGemList.refresh();
+						}
+						break;
+				}
+			}
+
+			private function filterFunctionAgi(item:Object):Boolean
+			{
+				return item.agi > 0;
+			}
+		]]>
+	</fx:Script>
+	
+	<s:layout>
+		<s:VerticalLayout verticalAlign="top" horizontalAlign="left"/>
+	</s:layout>
+	
+	<!-- Filter -->
+	<s:Panel title="Filter" width="100%" height="177">
+		
+		<s:DropDownList dataProvider="{orientType}"
+						selectedIndex="0"  x="10" y="10"/>
+		
+		<s:DropDownList dataProvider="{role}"
+					selectedIndex="0"  x="143" y="10"/>
+
+		<s:DropDownList dataProvider="{gemColor}"
+						selectedIndex="0"  x="272" y="10"/>
+		<s:HGroup id="filterGroup"
+				  x="10" y="39"
+				  click="filterGroup_clickHandler(event)">
+			<s:Label text="Attribute" />
+			<s:CheckBox id="filterStr"
+						name="attr" label="Str" 
+						   excludeFrom="Rogue"/>
+			<s:CheckBox id="filterAgi"
+						name="attr" label="Agi" />
+			<s:CheckBox id="filterSta"
+						name="attr" label="Sta" />
+			<s:CheckBox id="filterInt"
+						name="attr" label="Int" 
+						   excludeFrom="Rogue"/>
+			<s:CheckBox id="filterSpr"
+						name="attr" label="Spr"  
+						   excludeFrom="Rogue"/>
+			<s:CheckBox id="filterAp"
+						name="attr" label="AP" />
+			<s:CheckBox id="filterCri"
+						name="attr" label="Cri"/>
+			<s:CheckBox id="filterHit"
+						name="attr" label="Hit"/>
+			<s:CheckBox id="filterExp"
+						name="attr" label="Exp"/>
+			<s:CheckBox id="filterArp"
+						name="attr" label="ArP"/>
+			<s:CheckBox id="filterHaste"
+						name="attr" label="Haste"/>
+			<s:CheckBox id="filterDefence"
+						name="attr" label="Defence"
+						   excludeFrom="Rogue"/>
+			
+			<s:Button id="resetFilter"
+					  label="reset"
+					  click="resetFilter_clickHandler(event)" />
+		</s:HGroup>
+		
+	</s:Panel>
+	
+	<s:Panel id="preferPanel"
+			 title="Recommended Gems"
+			 width="100%">
+		<mx:DataGrid id="prefer" dataProvider="{preferGemList}"
+					 rowCount="{preferGemList.length}"
+					 itemClick="prefer_itemClickHandler(event)">
+			<mx:columns>
+				<mx:DataGridColumn headerText="Unlike" labelFunction="unlikeLabelFunction" />
+				<mx:DataGridColumn headerText="Name" dataField="name" />
+				<mx:DataGridColumn headerText="Color" dataField="type" />
+				<mx:DataGridColumn headerText="Agility" dataField="agi" />
+				<mx:DataGridColumn headerText="Hit" dataField="hit" />
+				<mx:DataGridColumn headerText="Stamina" dataField="sta" />
+				<mx:DataGridColumn headerText="Attack Power" dataField="ap" />
+				<mx:DataGridColumn headerText="Reagent" dataField="reagent" />
+			</mx:columns>
+			
+		</mx:DataGrid>
+		
+	</s:Panel>
+	
+	<s:Panel id="otherPanel"
+			 title="Other Gems"
+			 width="100%">
+		
+		<mx:DataGrid id="other" dataProvider="{otherGemList}"
+					 rowCount="{otherGemList.length}"
+					 itemClick="other_itemClickHandler(event)">
+			<mx:columns>
+				<mx:DataGridColumn headerText="Like"  labelFunction="addLikeLabel"/>
+				<mx:DataGridColumn headerText="Name" dataField="name" />
+				<mx:DataGridColumn headerText="Color" dataField="type" />
+				<mx:DataGridColumn headerText="Agility" dataField="agi" />
+				<mx:DataGridColumn headerText="Hit" dataField="hit" />
+				<mx:DataGridColumn headerText="Stamina" dataField="sta" />
+				<mx:DataGridColumn headerText="Attack Power" dataField="ap" />
+				<mx:DataGridColumn headerText="Reagent" dataField="reagent" />
+			</mx:columns>
+		</mx:DataGrid>
+	</s:Panel>
+	
+</s:Group>

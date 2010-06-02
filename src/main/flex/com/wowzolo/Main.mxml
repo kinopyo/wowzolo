@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" xmlns:view="com.wowzolo.view.*">
+
+	<fx:Script>
+		<![CDATA[
+			import com.wowzolo.events.ChooseClassEvent;
+			
+			import mx.controls.Alert;
+
+			[Bindable]
+			private var klass:String;
+			protected function indexView_selectClassHandler(e:ChooseClassEvent):void
+			{
+				klass = e.selectedClass;
+				
+				mainViewStack.selectedIndex = 1;
+			}
+
+		]]>
+	</fx:Script>
+
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:ArrayList id="language">
+			<fx:String>English</fx:String>
+			<fx:String>中文繁體</fx:String>
+			<fx:String>한글</fx:String>
+		</s:ArrayList>
+	</fx:Declarations>
+	
+	<s:layout>
+		<s:BasicLayout />
+	</s:layout>
+	
+	<s:HGroup right="10" top="10">
+		<s:DropDownList dataProvider="{language}"
+						selectedIndex="0"/>
+		
+		<s:Button label="About this site" />
+	</s:HGroup>
+	
+	<mx:ViewStack id="mainViewStack">
+		<s:NavigatorContent>
+			<view:Index id="indexView" chooseClass="indexView_selectClassHandler(event)"/>
+		</s:NavigatorContent>
+		
+		<s:NavigatorContent>
+			<view:BaseView id="baseView" klass="{klass}"/>
+		</s:NavigatorContent>
+	</mx:ViewStack>
+</s:Application>
