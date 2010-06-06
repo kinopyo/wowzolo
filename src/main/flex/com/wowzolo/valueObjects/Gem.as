@@ -17,6 +17,12 @@ package com.wowzolo.valueObjects
 			agiGem.reagent = "Ruby";
 			agiGem.type = "red";
 			
+			var apGem:Object = new Object();
+			apGem.ap = 20;
+			apGem.name = "AP Ruby";
+			apGem.reagent = "Ruby";
+			apGem.type = "red";
+			
 			var hitGem:Object = new Object();
 			hitGem.hit = 20;
 			hitGem.name = "King Yellow";
@@ -31,6 +37,7 @@ package com.wowzolo.valueObjects
 			shiftGem.type = "purple";
 			
 			gemPreferList.addItem(agiGem);
+			gemPreferList.addItem(apGem);
 			gemPreferList.addItem(hitGem);
 			
 			gemOtherList.addItem(shiftGem);

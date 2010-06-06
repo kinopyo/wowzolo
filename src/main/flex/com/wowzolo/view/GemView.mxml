@@ -13,13 +13,15 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import com.wowzolo.valueObjects.Gem;
+			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.controls.List;
 			import mx.events.FlexEvent;
 			import mx.events.ListEvent;
 			
-			import com.wowzolo.valueObjects.Gem;
+			import spark.events.IndexChangeEvent;
 			
 			[Bindable]
 			public var klass:String;
@@ -40,7 +42,14 @@
 			
 			[Bindable]
 			private var otherGemList:ArrayCollection = gemList.gemOtherList;
+			
+			private var selectedGemColor:String;
+			private var checkedAttrFilter:Array = new Array();
 
+			/**********************************************/
+			/** 				function				  */
+			/**********************************************/
+			
 			protected function group1_creationCompleteHandler(event:FlexEvent):void
 			{
 				this.currentState = klass;
@@ -70,8 +79,8 @@
 				if (event.columnIndex == 0) {
 					
 				}
-					preferGemList.addItem(otherGemList.getItemAt(event.rowIndex));
-					otherGemList.removeItemAt(event.rowIndex);
+				preferGemList.addItem(otherGemList.getItemAt(event.rowIndex));
+				otherGemList.removeItemAt(event.rowIndex);
 			}
 			
 			protected function resetFilter_clickHandler(event:MouseEvent):void
@@ -88,29 +97,68 @@
 				filterSpr.selected = false;
 				filterSta.selected = false;
 				filterStr.selected = false;
+				
+				checkedAttrFilter = [];
+				preferGemList.filterFunction = filterFunction;
+				preferGemList.refresh();
 			}
 
 
 			protected function filterGroup_clickHandler(event:MouseEvent):void
 			{
+				if (event.target is CheckBox == false) return;
 				var checkboxId:String = event.target.id;
-				switch (checkboxId) {
-					case "filterAgi" :
-						if (filterAgi.selected){
-							preferGemList.filterFunction = filterFunctionAgi;
-							preferGemList.refresh();
-						} else {
-							preferGemList.filterFunction = null;
-							preferGemList.refresh();
+				// fetch the keyword from checkboxId which has the structure 'fiilterAgi', 'filterAp'
+				var keyword:String = checkboxId.replace("filter", "");
+				
+				if (event.target.selected){
+					checkedAttrFilter.push(keyword);
+				} else {
+					for (var i:String in checkedAttrFilter){
+						if (checkedAttrFilter[i] == keyword){
+							checkedAttrFilter.splice(i, 1);
 						}
-						break;
+					}
 				}
+				
+				preferGemList.filterFunction = filterFunction;
+				preferGemList.refresh();
+			}
+			
+			protected function gemFilter_changeHandler(event:IndexChangeEvent):void
+			{
+				selectedGemColor = gemFilter.selectedItem as String;
+
+				preferGemList.filterFunction = filterFunction;
+				preferGemList.refresh();
+			}
+			
+			private function filterFunction(item:Object):Boolean
+			{
+				var checkboxResult:Boolean = true;
+				var gemColorResult:Boolean = true;
+				// if some checkbox is selected
+				if (checkedAttrFilter.length != 0){
+					for (var keyword:String in checkedAttrFilter){
+						// if attr(like ap, hit..) > 0
+						// keyword's initial character is Capital..like 'Agi'
+						if (item[checkedAttrFilter[keyword].toLowerCase()] > 0) continue;
+						checkboxResult = false;
+						break;
+					}
+				}
+				
+				// if one gem color is selected
+				if (selectedGemColor && selectedGemColor != "All") {
+					if (item.type != selectedGemColor.toLowerCase()){
+						gemColorResult = false;
+					}
+				}
+				return checkboxResult && gemColorResult;
 			}
 
-			private function filterFunctionAgi(item:Object):Boolean
-			{
-				return item.agi > 0;
-			}
+
+
 		]]>
 	</fx:Script>
 	
@@ -121,14 +169,23 @@
 	<!-- Filter -->
 	<s:Panel title="Filter" width="100%" height="177">
 		
-		<s:DropDownList dataProvider="{orientType}"
-						selectedIndex="0"  x="10" y="10"/>
+		<s:Label x="20" y="10"
+				 text="DPS"
+				 includeIn="Rogue"  width="77" height="22" fontSize="12" textAlign="center" verticalAlign="middle"/>
 		
 		<s:DropDownList dataProvider="{role}"
-					selectedIndex="0"  x="143" y="10"/>
+						selectedIndex="0"  x="10" y="10"
+						excludeFrom="Rogue"/>
+		
+		<s:DropDownList dataProvider="{orientType}"
+						selectedIndex="0"  x="143" y="10"/>
 
-		<s:DropDownList dataProvider="{gemColor}"
-						selectedIndex="0"  x="272" y="10"/>
+		<!--TODO	apply the background color based on the gem color	-->
+		<s:DropDownList id="gemFilter"
+						dataProvider="{gemColor}"
+						selectedIndex="0"  x="272" y="10"
+						change="gemFilter_changeHandler(event)"/>
+		
 		<s:HGroup id="filterGroup"
 				  x="10" y="39"
 				  click="filterGroup_clickHandler(event)">
@@ -173,7 +230,7 @@
 			 title="Recommended Gems"
 			 width="100%">
 		<mx:DataGrid id="prefer" dataProvider="{preferGemList}"
-					 rowCount="{preferGemList.length}"
+					 rowCount="{preferGemList.length == 0 ? 1 : preferGemList.length }"
 					 itemClick="prefer_itemClickHandler(event)">
 			<mx:columns>
 				<mx:DataGridColumn headerText="Unlike" labelFunction="unlikeLabelFunction" />
