@@ -6,16 +6,26 @@
 
 
 	<fx:Declarations>
-		<s:State name="healer" />
-		<s:State name="Rogue" />
+		<s:State name="warlock" />
+		<s:State name="rogue" />
+		<s:State name="mage" />
+		<s:State name="priest" />
+		<s:State name="warrior" />
+		<s:State name="paladin" />
+		<s:State name="dk" />
+		<s:State name="druid" />
+		<s:State name="hunter" />
+		<s:State name="shaman" />
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	
 	<fx:Script>
 		<![CDATA[
+			import com.wowzolo.constant.GemConstant;
 			import com.wowzolo.valueObjects.Gem;
 			
 			import mx.collections.ArrayCollection;
+			import mx.collections.ArrayList;
 			import mx.controls.Alert;
 			import mx.controls.List;
 			import mx.events.FlexEvent;
@@ -27,13 +37,13 @@
 			public var klass:String;
 			
 			[Bindable]
-			private var orientType:ArrayCollection = new ArrayCollection(["pvp", "pve"]);
+			private var orientType:ArrayCollection = new ArrayCollection(["PVP", "PVE"]);
 			
 			[Bindable]
 			private var role:ArrayCollection  = new ArrayCollection(["DPS", "Healer", "Tank"]);
 			
 			[Bindable]
-			private var gemColor:ArrayCollection = new ArrayCollection(["All", "Red", "Yellow", "Blue", "Orange", "Green", "Purple"]);
+			private var gemColor:ArrayList = GemConstant.GEM_COLOR_LIST;
 			
 			private var gemList:Gem = new Gem();
 			
@@ -159,6 +169,24 @@
 
 
 
+
+			protected function roleDropdown_changeHandler(event:IndexChangeEvent):void
+			{
+				var role:String = DropDownList(event.currentTarget).selectedItem;
+				if (role == "Tank"){
+					filterDefence.visible = true;
+					filterDodge.visible = true;
+					filterDefence.includeInLayout = true;
+					filterDodge.includeInLayout = true;
+					
+				} else {
+					filterDefence.visible = false;
+					filterDodge.visible = false;
+					filterDefence.includeInLayout = false;
+					filterDodge.includeInLayout = false;
+				}
+			}
+
 		]]>
 	</fx:Script>
 	
@@ -166,16 +194,19 @@
 		<s:VerticalLayout verticalAlign="top" horizontalAlign="left"/>
 	</s:layout>
 	
-	<!-- Filter -->
+	<!-- Filter Panel -->
 	<s:Panel title="Filter" width="100%" height="177">
 		
 		<s:Label x="20" y="10"
 				 text="DPS"
-				 includeIn="Rogue"  width="77" height="22" fontSize="12" textAlign="center" verticalAlign="middle"/>
+				 includeIn="rogue, mage, hunter, warlock"  
+				 width="77" height="22" fontSize="12" textAlign="center" verticalAlign="middle"/>
 		
-		<s:DropDownList dataProvider="{role}"
+		<s:DropDownList id="roleDropdown"
+						dataProvider="{role}"
 						selectedIndex="0"  x="10" y="10"
-						excludeFrom="Rogue"/>
+						excludeFrom="rogue, mage, hunter, warlock"
+						change="roleDropdown_changeHandler(event)"/>
 		
 		<s:DropDownList dataProvider="{orientType}"
 						selectedIndex="0"  x="143" y="10"/>
@@ -183,46 +214,62 @@
 		<!--TODO	apply the background color based on the gem color	-->
 		<s:DropDownList id="gemFilter"
 						dataProvider="{gemColor}"
-						selectedIndex="0"  x="272" y="10"
+						selectedIndex="0"
+						x="272" y="10"
 						change="gemFilter_changeHandler(event)"/>
 		
 		<s:HGroup id="filterGroup"
 				  x="10" y="39"
 				  click="filterGroup_clickHandler(event)">
-			<s:Label text="Attribute" />
+			<s:Label text="Attribute" height="20" verticalAlign="middle" fontWeight="bold"/>
 			<s:CheckBox id="filterStr"
 						name="attr" label="Str" 
-						   excludeFrom="Rogue"/>
+						excludeFrom="rogue, warlock, hunter, druid, mage, priest"/>
 			<s:CheckBox id="filterAgi"
-						name="attr" label="Agi" />
-			<s:CheckBox id="filterSta"
-						name="attr" label="Sta" />
+						name="attr" label="Agi"
+						excludeFrom="warlock, mage, priest, dk, paladin, warrior"/>
 			<s:CheckBox id="filterInt"
 						name="attr" label="Int" 
-						   excludeFrom="Rogue"/>
+						excludeFrom="rogue, dk, warrior"/>
 			<s:CheckBox id="filterSpr"
 						name="attr" label="Spr"  
-						   excludeFrom="Rogue"/>
+						   excludeFrom="rogue, dk, hunter, warlock, warrior"/>
 			<s:CheckBox id="filterAp"
-						name="attr" label="AP" />
+						name="attr" label="AP"
+						excludeFrom="warlock, mage, priest"/>
+			<s:CheckBox id="filterSp"
+						name="attr" label="SP"
+						excludeFrom="dk, hunter, rogue, warrior"/>
 			<s:CheckBox id="filterCri"
 						name="attr" label="Cri"/>
 			<s:CheckBox id="filterHit"
 						name="attr" label="Hit"/>
-			<s:CheckBox id="filterExp"
-						name="attr" label="Exp"/>
-			<s:CheckBox id="filterArp"
-						name="attr" label="ArP"/>
 			<s:CheckBox id="filterHaste"
 						name="attr" label="Haste"/>
+			<s:CheckBox id="filterExp"
+						name="attr" label="Exp"
+						excludeFrom="mage, priest, warlock"/>
+			<s:CheckBox id="filterArp"
+						name="attr" label="ArP"/>
+			<s:CheckBox id="filterSta"
+						name="attr" label="Sta" />
 			<s:CheckBox id="filterDefence"
 						name="attr" label="Defence"
-						   excludeFrom="Rogue"/>
+						includeIn="dk, druid, paladin, warrior"
+						visible="false"/>
+			<s:CheckBox id="filterDodge"
+						name="attr" label="Dodge"
+						includeIn="dk, druid, paladin, warrior"
+						visible="false"/>
 			
 			<s:Button id="resetFilter"
 					  label="reset"
 					  click="resetFilter_clickHandler(event)" />
 		</s:HGroup>
+		<s:CheckBox id="jewelCraftCheckbox"
+					x="1" y="86" 
+					label="Are you Jewelcrafting?" 
+					selected="false" />
 		
 	</s:Panel>
 	

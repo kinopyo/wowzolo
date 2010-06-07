@@ -14,15 +14,16 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import com.wowzolo.constant.Classes;
 			import com.wowzolo.events.ChooseClassEvent;
 			
 			import mx.controls.Alert;
 			[Bindable]
 			public var imageFile:String;
 
-			protected function button1_clickHandler(event:MouseEvent):void
+			protected function classSelect_clickHandler(event:MouseEvent):void
 			{
-				var e:ChooseClassEvent = new ChooseClassEvent(ChooseClassEvent.CHOOSE_CLASS, rogue.label);
+				var e:ChooseClassEvent = new ChooseClassEvent(ChooseClassEvent.CHOOSE_CLASS, event.currentTarget.id);
 				dispatchEvent(e);
 			}
 
@@ -53,10 +54,19 @@
 	
 	<s:Panel title="Choose your class" width="400">
 		<s:layout>
-			<s:HorizontalLayout gap="10" />
+			<s:BasicLayout/>
 		</s:layout>
 		
-		<s:Button id="rogue" label="Rogue"  click="button1_clickHandler(event)"/>
+		<s:Button id="rogue" label="Rogue"  click="classSelect_clickHandler(event)" x="0" y="14"/>
+		<s:Button id="warlock" label="Warlock"  click="classSelect_clickHandler(event)" x="80" y="14"/>
+		<s:Button id="warrior" label="Warrior"  click="classSelect_clickHandler(event)" x="160" y="14"/>
+		<s:Button id="mage" label="Mage"  click="classSelect_clickHandler(event)" x="240" y="14"/>
+		<s:Button id="priest" label="Priest"  click="classSelect_clickHandler(event)" x="320" y="14"/>
+		<s:Button id="paladin" label="Paladin"  click="classSelect_clickHandler(event)" x="0" y="45"/>
+		<s:Button id="dk" label="DK"  click="classSelect_clickHandler(event)" x="80" y="45"/>
+		<s:Button id="hunter" label="Hunter"  click="classSelect_clickHandler(event)" x="160" y="45"/>
+		<s:Button id="shaman" label="Shaman"  click="classSelect_clickHandler(event)" x="240" y="45"/>
+		<s:Button id="druid" label="Druid"  click="classSelect_clickHandler(event)" x="320" y="45"/>
 	</s:Panel>
 	
 	<s:Panel title="Import data from your Armory"
