@@ -1,0 +1,6 @@
+.project
+.actionScriptProperties
+.classpath
+.flexProperties
+WebContent/WEB-INF/classes/*
+
