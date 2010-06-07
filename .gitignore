@@ -1,3 +1,5 @@
-.project
-WebContent/WEB-INF/classes/*
+.actionScriptProperties
 
+.classpath
+.flexProperties
+.gitignore
