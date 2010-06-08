@@ -2,7 +2,8 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
-		 creationComplete="group1_creationCompleteHandler(event)">
+		 initialize="gemView_initializeHandler(event)"
+		 creationComplete="gemView_creationCompleteHandler(event)">
 
 
 	<fx:Declarations>
@@ -40,7 +41,7 @@
 			private var orientType:ArrayCollection = new ArrayCollection(["PVP", "PVE"]);
 			
 			[Bindable]
-			private var role:ArrayCollection  = new ArrayCollection(["DPS", "Healer", "Tank"]);
+			private var roleList:ArrayCollection  = new ArrayCollection();
 			
 			[Bindable]
 			private var gemColor:ArrayList = GemConstant.GEM_COLOR_LIST;
@@ -60,11 +61,30 @@
 			/** 				function				  */
 			/**********************************************/
 			
-			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			protected function gemView_initializeHandler(event:FlexEvent):void
+			{
+				switch (klass) {
+					
+					case "warrior":
+					case "paladin":
+					case "druid":
+					case "dk":
+						roleList.addItem("Tank");
+					case "priest":
+					case "shaman":
+					case "paladin":
+					case "druid":
+						roleList.addItem("Healer");
+					default:
+						roleList.addItemAt("DPS", 0);
+				}
+			}
+			
+			protected function gemView_creationCompleteHandler(event:FlexEvent):void
 			{
 				this.currentState = klass;
 			}
-			
+
 			private function unlikeLabelFunction(item:Object, column:DataGridColumn):String{
 				return "-";
 			}
@@ -121,9 +141,11 @@
 				// fetch the keyword from checkboxId which has the structure 'fiilterAgi', 'filterAp'
 				var keyword:String = checkboxId.replace("filter", "");
 				
+				// checkbox is selected(checked), push them to keep
 				if (event.target.selected){
 					checkedAttrFilter.push(keyword);
 				} else {
+					// otherwise search it and kick it out
 					for (var i:String in checkedAttrFilter){
 						if (checkedAttrFilter[i] == keyword){
 							checkedAttrFilter.splice(i, 1);
@@ -173,19 +195,16 @@
 			protected function roleDropdown_changeHandler(event:IndexChangeEvent):void
 			{
 				var role:String = DropDownList(event.currentTarget).selectedItem;
-				if (role == "Tank"){
-					filterDefence.visible = true;
-					filterDodge.visible = true;
-					filterDefence.includeInLayout = true;
-					filterDodge.includeInLayout = true;
-					
+				if (role == "Healer"){
+					filterAgi.selected = false;
+					filterStr.selected = false;
+					filterAgi.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+					filterStr.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
 				} else {
-					filterDefence.visible = false;
-					filterDodge.visible = false;
-					filterDefence.includeInLayout = false;
-					filterDodge.includeInLayout = false;
+					
 				}
 			}
+
 
 		]]>
 	</fx:Script>
@@ -196,16 +215,11 @@
 	
 	<!-- Filter Panel -->
 	<s:Panel title="Filter" width="100%" height="177">
-		
-		<s:Label x="20" y="10"
-				 text="DPS"
-				 includeIn="rogue, mage, hunter, warlock"  
-				 width="77" height="22" fontSize="12" textAlign="center" verticalAlign="middle"/>
-		
+
 		<s:DropDownList id="roleDropdown"
-						dataProvider="{role}"
+						dataProvider="{roleList}"
 						selectedIndex="0"  x="10" y="10"
-						excludeFrom="rogue, mage, hunter, warlock"
+						enabled="{roleList.length != 1}"
 						change="roleDropdown_changeHandler(event)"/>
 		
 		<s:DropDownList dataProvider="{orientType}"
@@ -216,7 +230,11 @@
 						dataProvider="{gemColor}"
 						selectedIndex="0"
 						x="272" y="10"
-						change="gemFilter_changeHandler(event)"/>
+						change="gemFilter_changeHandler(event)">
+			<s:layout>
+				<s:VerticalLayout requestedRowCount="10" />
+			</s:layout>
+		</s:DropDownList>
 		
 		<s:HGroup id="filterGroup"
 				  x="10" y="39"
@@ -224,16 +242,18 @@
 			<s:Label text="Attribute" height="20" verticalAlign="middle" fontWeight="bold"/>
 			<s:CheckBox id="filterStr"
 						name="attr" label="Str" 
-						excludeFrom="rogue, warlock, hunter, druid, mage, priest"/>
+						excludeFrom="rogue, warlock, hunter, druid, mage, priest"
+						enabled="{roleDropdown.selectedItem != 'Healer'}"/>
 			<s:CheckBox id="filterAgi"
 						name="attr" label="Agi"
-						excludeFrom="warlock, mage, priest, dk, paladin, warrior"/>
+						excludeFrom="warlock, mage, priest, dk, paladin, warrior"
+						enabled="{roleDropdown.selectedItem != 'Healer'}"/>
 			<s:CheckBox id="filterInt"
 						name="attr" label="Int" 
 						excludeFrom="rogue, dk, warrior"/>
 			<s:CheckBox id="filterSpr"
 						name="attr" label="Spr"  
-						   excludeFrom="rogue, dk, hunter, warlock, warrior"/>
+						excludeFrom="rogue, dk, hunter, warlock, warrior"/>
 			<s:CheckBox id="filterAp"
 						name="attr" label="AP"
 						excludeFrom="warlock, mage, priest"/>
@@ -250,17 +270,18 @@
 						name="attr" label="Exp"
 						excludeFrom="mage, priest, warlock"/>
 			<s:CheckBox id="filterArp"
-						name="attr" label="ArP"/>
-			<s:CheckBox id="filterSta"
-						name="attr" label="Sta" />
+						name="attr" label="ArP"
+						excludeFrom="mage, priest, warlock, paladin"/>
 			<s:CheckBox id="filterDefence"
 						name="attr" label="Defence"
 						includeIn="dk, druid, paladin, warrior"
-						visible="false"/>
+						enabled="{roleDropdown.selectedItem == 'Tank'}"/>
 			<s:CheckBox id="filterDodge"
 						name="attr" label="Dodge"
 						includeIn="dk, druid, paladin, warrior"
-						visible="false"/>
+						enabled="{roleDropdown.selectedItem == 'Tank'}"/>
+			<s:CheckBox id="filterSta"
+						name="attr" label="Sta" />
 			
 			<s:Button id="resetFilter"
 					  label="reset"

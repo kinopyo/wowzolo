@@ -3,3 +3,5 @@
 .classpath
 .flexProperties
 .gitignore
+WebContent/WEB-INF/classes/*.*
+WebContent/wowzolo-debug/*.*

@@ -9,7 +9,7 @@ package com.wowzolo.constant
 		}
 		
 		public static const GEM_COLOR_LIST:ArrayList = 
-			new ArrayList([GEM_ALL, GEM_RED, GEM_YELLOW, GEM_YELLOW, GEM_ORANGE, GEM_GREEN, GEM_PURPLE, GEM_META]);
+			new ArrayList([GEM_ALL, GEM_RED, GEM_YELLOW, GEM_BLUE, GEM_ORANGE, GEM_GREEN, GEM_PURPLE, GEM_META]);
 		
 		public static const GEM_ALL:String = "All";
 		public static const GEM_RED:String = "Red";
