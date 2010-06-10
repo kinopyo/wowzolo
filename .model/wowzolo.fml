@@ -4,4 +4,98 @@
   <annotation name="ActionScriptGeneration">
     <item name="FullyQualifyReferences">true</item>
   </annotation>
+  <service name="GemService">
+    <annotation name="ActionScriptGeneration">
+      <item name="ServiceType">RemoteObject</item>
+      <item name="Package">services</item>
+      <item name="Destination">gemService</item>
+    </annotation>
+    <annotation name="ServiceConfig">
+      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
+      <item name="contextRoot">/wowzolo</item>
+      <item name="rootUrl">http://localhost:8080/wowzolo/</item>
+      <item name="LINKED_FILE"></item>
+      <item name="ABSOLUTE_ENDPOINT">http://localhost:8080/wowzolo/messagebroker/amf</item>
+    </annotation>
+    <annotation name="ServiceTypeGroup">
+      <item name="ServiceBackendType">BlazeDS</item>
+    </annotation>
+    <function name="getRecommendGemByClass" arguments="arg0:string" return-type="Com_wowzolo_entity_Gem[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">string</item>
+        <item name="returnType">Com_wowzolo_entity_Gem</item>
+      </annotation>
+    </function>
+    <function name="getNormalGemByClass" arguments="arg0:string" return-type="Com_wowzolo_entity_Gem[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">string</item>
+        <item name="returnType">Com_wowzolo_entity_Gem</item>
+      </annotation>
+    </function>
+  </service>
+  <entity name="Com_wowzolo_entity_Reagent">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Com_wowzolo_entity_Reagent</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="RemoteClass">com.wowzolo.entity.Reagent</item>
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">GemService</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="id" type="integer"/>
+    <property name="name" type="string"/>
+  </entity>
+  <entity name="Com_wowzolo_entity_Gem">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Com_wowzolo_entity_Gem</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="RemoteClass">com.wowzolo.entity.Gem</item>
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">GemService</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="res" type="integer"/>
+    <property name="parry" type="integer"/>
+    <property name="spp" type="integer"/>
+    <property name="type" type="string"/>
+    <property name="spr" type="integer"/>
+    <property name="haste" type="integer"/>
+    <property name="id" type="integer"/>
+    <property name="pve" type="integer"/>
+    <property name="reagent" type="Com_wowzolo_entity_Reagent"/>
+    <property name="def" type="integer"/>
+    <property name="hit" type="integer"/>
+    <property name="name" type="string"/>
+    <property name="requiredSkill" type="string"/>
+    <property name="arp" type="integer"/>
+    <property name="cri" type="integer"/>
+    <property name="icon" type="string"/>
+    <property name="sta" type="integer"/>
+    <property name="pvp" type="integer"/>
+    <property name="sp" type="integer"/>
+    <property name="mana" type="integer"/>
+    <property name="dodge" type="integer"/>
+    <property name="exp" type="integer"/>
+    <property name="str" type="integer"/>
+    <property name="ap" type="integer"/>
+    <property name="agi" type="integer"/>
+    <property name="intel" type="integer"/>
+    <property name="gemDesc" type="string"/>
+  </entity>
 </model>
