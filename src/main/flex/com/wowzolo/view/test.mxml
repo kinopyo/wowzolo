@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300" xmlns:services="services.*">
+	<s:layout>
+		<s:BasicLayout/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			
+			protected function dataGrid_creationCompleteHandler(event:FlexEvent):void
+			{
+				getRecommendGemByClassResult.token = gemService.getRecommendGemByClass("rogue");
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<s:CallResponder id="getRecommendGemByClassResult"/>
+		<services:GemService id="gemService" fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)" showBusyCursor="true"/>
+		<!-- 非ビジュアルエレメント (サービス、値オブジェクトなど) をここに配置 -->
+	</fx:Declarations>
+	<mx:DataGrid x="10" y="10" id="dataGrid" creationComplete="dataGrid_creationCompleteHandler(event)" dataProvider="{getRecommendGemByClassResult.lastResult}">
+		<mx:columns>
+			<mx:DataGridColumn headerText="res" dataField="res"/>
+			<mx:DataGridColumn headerText="parry" dataField="parry"/>
+			<mx:DataGridColumn headerText="spp" dataField="spp"/>
+			<mx:DataGridColumn headerText="type" dataField="type"/>
+			<mx:DataGridColumn headerText="spr" dataField="spr"/>
+			<mx:DataGridColumn headerText="haste" dataField="haste"/>
+			<mx:DataGridColumn headerText="id" dataField="id"/>
+			<mx:DataGridColumn headerText="pve" dataField="pve"/>
+			<mx:DataGridColumn headerText="def" dataField="def"/>
+			<mx:DataGridColumn headerText="reagent" dataField="reagent"/>
+			<mx:DataGridColumn headerText="hit" dataField="hit"/>
+			<mx:DataGridColumn headerText="name" dataField="name"/>
+			<mx:DataGridColumn headerText="requiredSkill" dataField="requiredSkill"/>
+			<mx:DataGridColumn headerText="arp" dataField="arp"/>
+			<mx:DataGridColumn headerText="cri" dataField="cri"/>
+			<mx:DataGridColumn headerText="icon" dataField="icon"/>
+			<mx:DataGridColumn headerText="sp" dataField="sp"/>
+			<mx:DataGridColumn headerText="sta" dataField="sta"/>
+			<mx:DataGridColumn headerText="pvp" dataField="pvp"/>
+			<mx:DataGridColumn headerText="mana" dataField="mana"/>
+			<mx:DataGridColumn headerText="dodge" dataField="dodge"/>
+			<mx:DataGridColumn headerText="exp" dataField="exp"/>
+			<mx:DataGridColumn headerText="str" dataField="str"/>
+			<mx:DataGridColumn headerText="ap" dataField="ap"/>
+			<mx:DataGridColumn headerText="agi" dataField="agi"/>
+			<mx:DataGridColumn headerText="intel" dataField="intel"/>
+			<mx:DataGridColumn headerText="gemDesc" dataField="gemDesc"/>
+		</mx:columns>
+	</mx:DataGrid>
+</s:Group>
