@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%">
+	<fx:Declarations>
+		<s:State name="warlock" />
+		<s:State name="rogue" />
+		<s:State name="mage" />
+		<s:State name="priest" />
+		<s:State name="warrior" />
+		<s:State name="paladin" />
+		<s:State name="dk" />
+		<s:State name="druid" />
+		<s:State name="hunter" />
+		<s:State name="shaman" />
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			[Bindable]
+			public var klass:String = new String();
+		]]>
+	</fx:Script>
+</s:Group>

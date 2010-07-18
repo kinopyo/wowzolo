@@ -53,20 +53,20 @@ public class _Super_Com_wowzolo_entity_Gem extends flash.events.EventDispatcher 
 	private var _internal_spp : int;
 	private var _internal_type : String;
 	private var _internal_spr : int;
-	private var _internal_haste : int;
 	private var _internal_id : int;
+	private var _internal_haste : int;
 	private var _internal_pve : int;
-	private var _internal_reagent : valueObjects.Com_wowzolo_entity_Reagent;
 	private var _internal_def : int;
+	private var _internal_reagent : valueObjects.Com_wowzolo_entity_Reagent;
 	private var _internal_hit : int;
 	private var _internal_name : String;
 	private var _internal_requiredSkill : String;
 	private var _internal_arp : int;
 	private var _internal_cri : int;
 	private var _internal_icon : String;
-	private var _internal_sta : int;
 	private var _internal_pvp : int;
 	private var _internal_sp : int;
+	private var _internal_sta : int;
 	private var _internal_mana : int;
 	private var _internal_dodge : int;
 	private var _internal_exp : int;
@@ -122,14 +122,14 @@ public class _Super_Com_wowzolo_entity_Gem extends flash.events.EventDispatcher 
             return _internal_spr;
     }    
 	[Bindable(event="propertyChange")] 
-    public function get haste() : int    
-    {
-            return _internal_haste;
-    }    
-	[Bindable(event="propertyChange")] 
     public function get id() : int    
     {
             return _internal_id;
+    }    
+	[Bindable(event="propertyChange")] 
+    public function get haste() : int    
+    {
+            return _internal_haste;
     }    
 	[Bindable(event="propertyChange")] 
     public function get pve() : int    
@@ -137,14 +137,14 @@ public class _Super_Com_wowzolo_entity_Gem extends flash.events.EventDispatcher 
             return _internal_pve;
     }    
 	[Bindable(event="propertyChange")] 
-    public function get reagent() : valueObjects.Com_wowzolo_entity_Reagent    
-    {
-            return _internal_reagent;
-    }    
-	[Bindable(event="propertyChange")] 
     public function get def() : int    
     {
             return _internal_def;
+    }    
+	[Bindable(event="propertyChange")] 
+    public function get reagent() : valueObjects.Com_wowzolo_entity_Reagent    
+    {
+            return _internal_reagent;
     }    
 	[Bindable(event="propertyChange")] 
     public function get hit() : int    
@@ -177,11 +177,6 @@ public class _Super_Com_wowzolo_entity_Gem extends flash.events.EventDispatcher 
             return _internal_icon;
     }    
 	[Bindable(event="propertyChange")] 
-    public function get sta() : int    
-    {
-            return _internal_sta;
-    }    
-	[Bindable(event="propertyChange")] 
     public function get pvp() : int    
     {
             return _internal_pvp;
@@ -190,6 +185,11 @@ public class _Super_Com_wowzolo_entity_Gem extends flash.events.EventDispatcher 
     public function get sp() : int    
     {
             return _internal_sp;
+    }    
+	[Bindable(event="propertyChange")] 
+    public function get sta() : int    
+    {
+            return _internal_sta;
     }    
 	[Bindable(event="propertyChange")] 
     public function get mana() : int    
@@ -320,23 +320,6 @@ public class _Super_Com_wowzolo_entity_Gem extends flash.events.EventDispatcher 
             model_internal::isValid_der = model_internal::calculateIsValid();
         }  
     }    
-    public function set haste(value:int) : void 
-    {    	
-        var recalcValid:Boolean = false;
-    	
-    	
-    	var oldValue:int = _internal_haste;               
-        if (oldValue !== value)
-        {
-            _internal_haste = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "haste", oldValue, _internal_haste));
-        }    	     
-        
-        if (recalcValid && model_internal::_cacheInitialized_isValid)
-        {
-            model_internal::isValid_der = model_internal::calculateIsValid();
-        }  
-    }    
     public function set id(value:int) : void 
     {    	
         var recalcValid:Boolean = false;
@@ -347,6 +330,23 @@ public class _Super_Com_wowzolo_entity_Gem extends flash.events.EventDispatcher 
         {
             _internal_id = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "id", oldValue, _internal_id));
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
+    public function set haste(value:int) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	
+    	
+    	var oldValue:int = _internal_haste;               
+        if (oldValue !== value)
+        {
+            _internal_haste = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "haste", oldValue, _internal_haste));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -371,23 +371,6 @@ public class _Super_Com_wowzolo_entity_Gem extends flash.events.EventDispatcher 
             model_internal::isValid_der = model_internal::calculateIsValid();
         }  
     }    
-    public function set reagent(value:valueObjects.Com_wowzolo_entity_Reagent) : void 
-    {    	
-        var recalcValid:Boolean = false;
-    	
-    	
-    	var oldValue:valueObjects.Com_wowzolo_entity_Reagent = _internal_reagent;               
-        if (oldValue !== value)
-        {
-            _internal_reagent = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "reagent", oldValue, _internal_reagent));
-        }    	     
-        
-        if (recalcValid && model_internal::_cacheInitialized_isValid)
-        {
-            model_internal::isValid_der = model_internal::calculateIsValid();
-        }  
-    }    
     public function set def(value:int) : void 
     {    	
         var recalcValid:Boolean = false;
@@ -398,6 +381,23 @@ public class _Super_Com_wowzolo_entity_Gem extends flash.events.EventDispatcher 
         {
             _internal_def = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "def", oldValue, _internal_def));
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
+    public function set reagent(value:valueObjects.Com_wowzolo_entity_Reagent) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	
+    	
+    	var oldValue:valueObjects.Com_wowzolo_entity_Reagent = _internal_reagent;               
+        if (oldValue !== value)
+        {
+            _internal_reagent = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "reagent", oldValue, _internal_reagent));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -507,23 +507,6 @@ public class _Super_Com_wowzolo_entity_Gem extends flash.events.EventDispatcher 
             model_internal::isValid_der = model_internal::calculateIsValid();
         }  
     }    
-    public function set sta(value:int) : void 
-    {    	
-        var recalcValid:Boolean = false;
-    	
-    	
-    	var oldValue:int = _internal_sta;               
-        if (oldValue !== value)
-        {
-            _internal_sta = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "sta", oldValue, _internal_sta));
-        }    	     
-        
-        if (recalcValid && model_internal::_cacheInitialized_isValid)
-        {
-            model_internal::isValid_der = model_internal::calculateIsValid();
-        }  
-    }    
     public function set pvp(value:int) : void 
     {    	
         var recalcValid:Boolean = false;
@@ -551,6 +534,23 @@ public class _Super_Com_wowzolo_entity_Gem extends flash.events.EventDispatcher 
         {
             _internal_sp = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "sp", oldValue, _internal_sp));
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
+    public function set sta(value:int) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	
+    	
+    	var oldValue:int = _internal_sta;               
+        if (oldValue !== value)
+        {
+            _internal_sta = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "sta", oldValue, _internal_sta));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)

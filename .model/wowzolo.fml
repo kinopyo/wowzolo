@@ -75,20 +75,20 @@
     <property name="spp" type="integer"/>
     <property name="type" type="string"/>
     <property name="spr" type="integer"/>
-    <property name="haste" type="integer"/>
     <property name="id" type="integer"/>
+    <property name="haste" type="integer"/>
     <property name="pve" type="integer"/>
-    <property name="reagent" type="Com_wowzolo_entity_Reagent"/>
     <property name="def" type="integer"/>
+    <property name="reagent" type="Com_wowzolo_entity_Reagent"/>
     <property name="hit" type="integer"/>
     <property name="name" type="string"/>
     <property name="requiredSkill" type="string"/>
     <property name="arp" type="integer"/>
     <property name="cri" type="integer"/>
     <property name="icon" type="string"/>
-    <property name="sta" type="integer"/>
     <property name="pvp" type="integer"/>
     <property name="sp" type="integer"/>
+    <property name="sta" type="integer"/>
     <property name="mana" type="integer"/>
     <property name="dodge" type="integer"/>
     <property name="exp" type="integer"/>

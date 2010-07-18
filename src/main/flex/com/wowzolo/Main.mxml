@@ -42,9 +42,7 @@
 		<s:Button label="About this site" />
 	</s:HGroup>
 	
-	<view:test />
-	
-	<mx:ViewStack id="mainViewStack">
+	<mx:ViewStack id="mainViewStack" horizontalCenter="-100" top="100">
 		<s:NavigatorContent>
 			<view:Index id="indexView" chooseClass="indexView_selectClassHandler(event)"/>
 		</s:NavigatorContent>

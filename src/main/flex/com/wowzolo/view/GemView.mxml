@@ -3,7 +3,7 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
 		 initialize="gemView_initializeHandler(event)"
-		 creationComplete="gemView_creationCompleteHandler(event)">
+		 creationComplete="gemView_creationCompleteHandler(event)" xmlns:services="services.*">
 
 
 	<fx:Declarations>
@@ -17,7 +17,14 @@
 		<s:State name="druid" />
 		<s:State name="hunter" />
 		<s:State name="shaman" />
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		
+		<s:CallResponder id="getRecommendGemByClassResult"/>
+		<s:CallResponder id="getNormalGemByClassResult"/>
+		
+		<services:GemService id="gemService" 
+							 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+							 result="gemService_resultHandler(event)"
+							 showBusyCursor="true"/>
 	</fx:Declarations>
 	
 	<fx:Script>
@@ -31,6 +38,7 @@
 			import mx.controls.List;
 			import mx.events.FlexEvent;
 			import mx.events.ListEvent;
+			import mx.rpc.events.ResultEvent;
 			
 			import spark.events.IndexChangeEvent;
 			
@@ -46,13 +54,11 @@
 			[Bindable]
 			private var gemColor:ArrayList = GemConstant.GEM_COLOR_LIST;
 			
-			private var gemList:Gem = new Gem();
+			[Bindable]
+			private var preferGemList:ArrayCollection = new ArrayCollection();
 			
 			[Bindable]
-			private var preferGemList:ArrayCollection = gemList.gemPreferList;
-			
-			[Bindable]
-			private var otherGemList:ArrayCollection = gemList.gemOtherList;
+			private var otherGemList:ArrayCollection = new ArrayCollection();
 			
 			private var selectedGemColor:String;
 			private var checkedAttrFilter:Array = new Array();
@@ -78,6 +84,7 @@
 					default:
 						roleList.addItemAt("DPS", 0);
 				}
+				
 			}
 			
 			protected function gemView_creationCompleteHandler(event:FlexEvent):void
@@ -107,10 +114,9 @@
 			{
 				// click the "-" favourite icon
 				if (event.columnIndex == 0) {
-					
+					preferGemList.addItem(otherGemList.getItemAt(event.rowIndex));
+					otherGemList.removeItemAt(event.rowIndex);
 				}
-				preferGemList.addItem(otherGemList.getItemAt(event.rowIndex));
-				otherGemList.removeItemAt(event.rowIndex);
 			}
 			
 			protected function resetFilter_clickHandler(event:MouseEvent):void
@@ -155,6 +161,8 @@
 				
 				preferGemList.filterFunction = filterFunction;
 				preferGemList.refresh();
+				otherGemList.filterFunction = filterFunction;
+				otherGemList.refresh();
 			}
 			
 			protected function gemFilter_changeHandler(event:IndexChangeEvent):void
@@ -163,6 +171,9 @@
 
 				preferGemList.filterFunction = filterFunction;
 				preferGemList.refresh();
+				
+				otherGemList.filterFunction = filterFunction;
+				otherGemList.refresh();
 			}
 			
 			private function filterFunction(item:Object):Boolean
@@ -182,14 +193,21 @@
 				
 				// if one gem color is selected
 				if (selectedGemColor && selectedGemColor != "All") {
-					if (item.type != selectedGemColor.toLowerCase()){
+					if (item.type != selectedGemColor){
 						gemColorResult = false;
 					}
 				}
 				return checkboxResult && gemColorResult;
 			}
-
-
+			
+			protected function jewelLabelFunction(item:Object, column:DataGridColumn):String
+			{
+				if (item.label != "") {
+					return "Yes";
+				} else {
+					return "";
+				}
+			}
 
 
 			protected function roleDropdown_changeHandler(event:IndexChangeEvent):void
@@ -204,7 +222,23 @@
 					
 				}
 			}
+			
+			// update the Service result to "preferGemList"
+			protected function gemService_resultHandler(event:ResultEvent):void
+			{
+				preferGemList = getRecommendGemByClassResult.lastResult
+				otherGemList = getNormalGemByClassResult.lastResult
+			}
 
+			protected function prefer_creationCompleteHandler():void
+			{
+				getRecommendGemByClassResult.token = gemService.getRecommendGemByClass(klass);
+			}
+			
+			protected function other_creationCompleteHandler():void
+			{
+				getNormalGemByClassResult.token = gemService.getNormalGemByClass(klass);
+			}
 
 		]]>
 	</fx:Script>
@@ -297,40 +331,39 @@
 	<s:Panel id="preferPanel"
 			 title="Recommended Gems"
 			 width="100%">
-		<mx:DataGrid id="prefer" dataProvider="{preferGemList}"
-					 rowCount="{preferGemList.length == 0 ? 1 : preferGemList.length }"
+		<mx:DataGrid id="prefer" 
+					 width="100%"
+					 creationComplete="prefer_creationCompleteHandler()"
+					 dataProvider="{getRecommendGemByClassResult.lastResult}"
+					 variableRowHeight="true"
+					 wordWrap="true"
 					 itemClick="prefer_itemClickHandler(event)">
 			<mx:columns>
-				<mx:DataGridColumn headerText="Unlike" labelFunction="unlikeLabelFunction" />
-				<mx:DataGridColumn headerText="Name" dataField="name" />
-				<mx:DataGridColumn headerText="Color" dataField="type" />
-				<mx:DataGridColumn headerText="Agility" dataField="agi" />
-				<mx:DataGridColumn headerText="Hit" dataField="hit" />
-				<mx:DataGridColumn headerText="Stamina" dataField="sta" />
-				<mx:DataGridColumn headerText="Attack Power" dataField="ap" />
-				<mx:DataGridColumn headerText="Reagent" dataField="reagent" />
+				<!--<mx:DataGridColumn headerText="Unlike" labelFunction="unlikeLabelFunction" width="60"/>-->
+				<mx:DataGridColumn headerText="name" dataField="name" width="160"/>
+				<mx:DataGridColumn headerText="type" dataField="type" width="100"/>
+				<mx:DataGridColumn headerText="Description" dataField="gemDesc" width="300"/>
+				<mx:DataGridColumn headerText="reagent" dataField="reagent.name"/>
+				<mx:DataGridColumn headerText="Jewel" dataField="requiredSkill" width="100" />
 			</mx:columns>
-			
 		</mx:DataGrid>
-		
 	</s:Panel>
 	
 	<s:Panel id="otherPanel"
 			 title="Other Gems"
 			 width="100%">
-		
-		<mx:DataGrid id="other" dataProvider="{otherGemList}"
-					 rowCount="{otherGemList.length}"
+
+		<mx:DataGrid id="other" 
+					 width="100%"
+					 creationComplete="other_creationCompleteHandler()" 
+					 dataProvider="{getNormalGemByClassResult.lastResult}"
 					 itemClick="other_itemClickHandler(event)">
 			<mx:columns>
-				<mx:DataGridColumn headerText="Like"  labelFunction="addLikeLabel"/>
-				<mx:DataGridColumn headerText="Name" dataField="name" />
-				<mx:DataGridColumn headerText="Color" dataField="type" />
-				<mx:DataGridColumn headerText="Agility" dataField="agi" />
-				<mx:DataGridColumn headerText="Hit" dataField="hit" />
-				<mx:DataGridColumn headerText="Stamina" dataField="sta" />
-				<mx:DataGridColumn headerText="Attack Power" dataField="ap" />
-				<mx:DataGridColumn headerText="Reagent" dataField="reagent" />
+				<mx:DataGridColumn headerText="name" dataField="name" width="160"/>
+				<mx:DataGridColumn headerText="type" dataField="type" width="100"/>
+				<mx:DataGridColumn headerText="Description" dataField="gemDesc" width="300"/>
+				<mx:DataGridColumn headerText="reagent" dataField="reagent.name"/>
+				<mx:DataGridColumn headerText="Jewel" dataField="requiredSkill" width="100"/>
 			</mx:columns>
 		</mx:DataGrid>
 	</s:Panel>

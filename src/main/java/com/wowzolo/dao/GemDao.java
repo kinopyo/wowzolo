@@ -23,7 +23,7 @@ public class GemDao implements IGemDao {
 	"agi is null and mana is null and intel is null and def is null and exp is null";
 	
 	private String RECOMMEND_QUERY = " (pvp =1 or pve = 1)";
-	private String NORMAL_QUERY = " pvp is null or pve is null";
+	private String NORMAL_QUERY = " (pvp is null and pve is null )";
 	
 	public GemDao(){}
 	

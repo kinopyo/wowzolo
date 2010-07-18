@@ -20,12 +20,12 @@ internal class _Com_wowzolo_entity_GemEntityMetadata extends com.adobe.fiber.val
 {
 	private static var emptyArray:Array = new Array();
 
-    model_internal static var allProperties:Array = new Array("res", "parry", "spp", "type", "spr", "haste", "id", "pve", "reagent", "def", "hit", "name", "requiredSkill", "arp", "cri", "icon", "sta", "pvp", "sp", "mana", "dodge", "exp", "str", "ap", "agi", "intel", "gemDesc");
+    model_internal static var allProperties:Array = new Array("res", "parry", "spp", "type", "spr", "id", "haste", "pve", "def", "reagent", "hit", "name", "requiredSkill", "arp", "cri", "icon", "pvp", "sp", "sta", "mana", "dodge", "exp", "str", "ap", "agi", "intel", "gemDesc");
     model_internal static var allAssociationProperties:Array = new Array();
     model_internal static var allRequiredProperties:Array = new Array();
-    model_internal static var allAlwaysAvailableProperties:Array = new Array("res", "parry", "spp", "type", "spr", "haste", "id", "pve", "reagent", "def", "hit", "name", "requiredSkill", "arp", "cri", "icon", "sta", "pvp", "sp", "mana", "dodge", "exp", "str", "ap", "agi", "intel", "gemDesc");
+    model_internal static var allAlwaysAvailableProperties:Array = new Array("res", "parry", "spp", "type", "spr", "id", "haste", "pve", "def", "reagent", "hit", "name", "requiredSkill", "arp", "cri", "icon", "pvp", "sp", "sta", "mana", "dodge", "exp", "str", "ap", "agi", "intel", "gemDesc");
     model_internal static var guardedProperties:Array = new Array();
-    model_internal static var dataProperties:Array = new Array("res", "parry", "spp", "type", "spr", "haste", "id", "pve", "reagent", "def", "hit", "name", "requiredSkill", "arp", "cri", "icon", "sta", "pvp", "sp", "mana", "dodge", "exp", "str", "ap", "agi", "intel", "gemDesc");
+    model_internal static var dataProperties:Array = new Array("res", "parry", "spp", "type", "spr", "id", "haste", "pve", "def", "reagent", "hit", "name", "requiredSkill", "arp", "cri", "icon", "pvp", "sp", "sta", "mana", "dodge", "exp", "str", "ap", "agi", "intel", "gemDesc");
     model_internal static var derivedProperties:Array = new Array();
     model_internal static var collectionProperties:Array = new Array();
     model_internal static var collectionBaseMap:Object;    
@@ -49,20 +49,20 @@ internal class _Com_wowzolo_entity_GemEntityMetadata extends com.adobe.fiber.val
             model_internal::dependentsOnMap["spp"] = new Array();
             model_internal::dependentsOnMap["type"] = new Array();
             model_internal::dependentsOnMap["spr"] = new Array();
-            model_internal::dependentsOnMap["haste"] = new Array();
             model_internal::dependentsOnMap["id"] = new Array();
+            model_internal::dependentsOnMap["haste"] = new Array();
             model_internal::dependentsOnMap["pve"] = new Array();
-            model_internal::dependentsOnMap["reagent"] = new Array();
             model_internal::dependentsOnMap["def"] = new Array();
+            model_internal::dependentsOnMap["reagent"] = new Array();
             model_internal::dependentsOnMap["hit"] = new Array();
             model_internal::dependentsOnMap["name"] = new Array();
             model_internal::dependentsOnMap["requiredSkill"] = new Array();
             model_internal::dependentsOnMap["arp"] = new Array();
             model_internal::dependentsOnMap["cri"] = new Array();
             model_internal::dependentsOnMap["icon"] = new Array();
-            model_internal::dependentsOnMap["sta"] = new Array();
             model_internal::dependentsOnMap["pvp"] = new Array();
             model_internal::dependentsOnMap["sp"] = new Array();
+            model_internal::dependentsOnMap["sta"] = new Array();
             model_internal::dependentsOnMap["mana"] = new Array();
             model_internal::dependentsOnMap["dodge"] = new Array();
             model_internal::dependentsOnMap["exp"] = new Array();
@@ -318,13 +318,13 @@ internal class _Com_wowzolo_entity_GemEntityMetadata extends com.adobe.fiber.val
      }                       
                   
      [Bindable(event="propertyChange")] 
-     public function get isHasteAvailable():Boolean
+     public function get isIdAvailable():Boolean
      {
         return true;
      }                       
                   
      [Bindable(event="propertyChange")] 
-     public function get isIdAvailable():Boolean
+     public function get isHasteAvailable():Boolean
      {
         return true;
      }                       
@@ -336,13 +336,13 @@ internal class _Com_wowzolo_entity_GemEntityMetadata extends com.adobe.fiber.val
      }                       
                   
      [Bindable(event="propertyChange")] 
-     public function get isReagentAvailable():Boolean
+     public function get isDefAvailable():Boolean
      {
         return true;
      }                       
                   
      [Bindable(event="propertyChange")] 
-     public function get isDefAvailable():Boolean
+     public function get isReagentAvailable():Boolean
      {
         return true;
      }                       
@@ -384,12 +384,6 @@ internal class _Com_wowzolo_entity_GemEntityMetadata extends com.adobe.fiber.val
      }                       
                   
      [Bindable(event="propertyChange")] 
-     public function get isStaAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
      public function get isPvpAvailable():Boolean
      {
         return true;
@@ -397,6 +391,12 @@ internal class _Com_wowzolo_entity_GemEntityMetadata extends com.adobe.fiber.val
                   
      [Bindable(event="propertyChange")] 
      public function get isSpAvailable():Boolean
+     {
+        return true;
+     }                       
+                  
+     [Bindable(event="propertyChange")] 
+     public function get isStaAvailable():Boolean
      {
         return true;
      }                       
@@ -490,13 +490,13 @@ internal class _Com_wowzolo_entity_GemEntityMetadata extends com.adobe.fiber.val
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get hasteStyle():com.adobe.fiber.styles.Style
+    public function get idStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get idStyle():com.adobe.fiber.styles.Style
+    public function get hasteStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
@@ -508,13 +508,13 @@ internal class _Com_wowzolo_entity_GemEntityMetadata extends com.adobe.fiber.val
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get reagentStyle():com.adobe.fiber.styles.Style
+    public function get defStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get defStyle():com.adobe.fiber.styles.Style
+    public function get reagentStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
@@ -556,12 +556,6 @@ internal class _Com_wowzolo_entity_GemEntityMetadata extends com.adobe.fiber.val
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get staStyle():com.adobe.fiber.styles.Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
     public function get pvpStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
@@ -569,6 +563,12 @@ internal class _Com_wowzolo_entity_GemEntityMetadata extends com.adobe.fiber.val
     
     [Bindable(event="propertyChange")]   
     public function get spStyle():com.adobe.fiber.styles.Style
+    {
+		return model_internal::_nullStyle;		
+    }      
+    
+    [Bindable(event="propertyChange")]   
+    public function get staStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      

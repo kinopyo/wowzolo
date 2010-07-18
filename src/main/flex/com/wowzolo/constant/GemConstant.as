@@ -8,6 +8,7 @@ package com.wowzolo.constant
 		{
 		}
 		
+		[Bindalbe]
 		public static const GEM_COLOR_LIST:ArrayList = 
 			new ArrayList([GEM_ALL, GEM_RED, GEM_YELLOW, GEM_BLUE, GEM_ORANGE, GEM_GREEN, GEM_PURPLE, GEM_META]);
 		
